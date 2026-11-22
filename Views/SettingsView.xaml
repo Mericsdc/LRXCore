@@ -1,0 +1,105 @@
+<UserControl x:Class="LRXCore.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="28,24">
+        <StackPanel MaxWidth="820" HorizontalAlignment="Left">
+            <TextBlock Text="LRX Core Ayarları" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="Arka plan güncelleme bildirimleri, sistem tepsisi ve yedekleme davranışlarını yönetin." Style="{StaticResource PageSubtitle}" Margin="0,4,0,20" />
+
+            <!-- Tray & Update Notification Settings -->
+            <Border Style="{StaticResource MatteCard}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="Arka Plan &amp; Güncelleme Bildirimleri" Style="{StaticResource SectionHeader}" Margin="0,0,0,14" />
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,16,0">
+                            <TextBlock Text="Pencere kapatıldığında sistem tepsisine (Tray) küçült" FontSize="13.5" FontWeight="Medium" />
+                            <TextBlock Text="Kapat düğmesine bastığınızda uygulama kapanmak yerine arka planda tepside çalışmaya devam eder." FontSize="12" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitchStyle}" IsChecked="{Binding MinimizeToTrayOnClose}" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,16,0">
+                            <TextBlock Text="Otomatik güncelleme kontrolü ve Windows bildirimi gönder" FontSize="13.5" FontWeight="Medium" />
+                            <TextBlock Text="Herhangi bir uygulamaya güncelleme geldiğinde Windows bildirimi ile haber verir." FontSize="12" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitchStyle}" IsChecked="{Binding AutoCheckUpdates}" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="160" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,16,0">
+                            <TextBlock Text="Kontrol sıklığı (Saat)" FontSize="13.5" FontWeight="Medium" />
+                            <TextBlock Text="Arka planda yeni sürümlerin ne sıklıkta denetleneceği." FontSize="12" Foreground="{StaticResource TextSecondary}" />
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding IntervalOptions}"
+                                  SelectedItem="{Binding UpdateCheckIntervalHours}"
+                                  VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,16,0">
+                            <TextBlock Text="Windows açılışında arka planda başlat" FontSize="13.5" FontWeight="Medium" />
+                            <TextBlock Text="Bilgisayar açıldığında otomatik olarak tepsiye küçülmüş şekilde başlar." FontSize="12" Foreground="{StaticResource TextSecondary}" />
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitchStyle}" IsChecked="{Binding StartWithWindows}" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Button Content="Şimdi Güncelleme &amp; Bildirim Testi Yap"
+                            Style="{StaticResource SecondaryButton}"
+                            Command="{Binding TestUpdateNotificationCommand}"
+                            HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <!-- Paths & Backups -->
+            <Border Style="{StaticResource MatteCard}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="Veri &amp; Kayıt Defteri Yedekleme Konumları" Style="{StaticResource SectionHeader}" Margin="0,0,0,12" />
+                    <TextBlock FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4">
+                        <Run Text="Ayarlar ve Profiller: " />
+                        <Run Text="{Binding AppDataPath, Mode=OneWay}" Foreground="{StaticResource TextPrimary}" />
+                    </TextBlock>
+                    <TextBlock FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,12">
+                        <Run Text=".REG Yedekleri: " />
+                        <Run Text="{Binding BackupsPath, Mode=OneWay}" Foreground="{StaticResource TextPrimary}" />
+                    </TextBlock>
+                    <Button Content="Yedek Klasörünü Aç" Style="{StaticResource SecondaryButton}" Command="{Binding OpenBackupsFolderCommand}" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <!-- About -->
+            <Border Style="{StaticResource MatteCard}">
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Text="{Binding AppVersionText}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="GitHub Deposu" Style="{StaticResource SecondaryButton}" Command="{Binding OpenGitHubCommand}" Margin="0,0,8,0" Padding="12,6" />
+                            <Button Content="Sürümü Kontrol Et" Style="{StaticResource SecondaryButton}" Command="{Binding CheckSelfUpdateCommand}" Padding="12,6" />
+                        </StackPanel>
+                    </DockPanel>
+                    <TextBlock Text="Format Sonrası Kurulum, Sistem Optimizasyonu, ShutUp10++ Gizlilik Ayarları, Hizmet Yönetimi, Derin Program Kaldırıcı ve Temizlik Merkezi." FontSize="12.5" Foreground="{StaticResource TextSecondary}" Margin="0,6,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{StaticResource BadgeSuccessFg}" Margin="0,8,0,0" Visibility="{Binding StatusMessage, Converter={StaticResource StrToVis}}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
